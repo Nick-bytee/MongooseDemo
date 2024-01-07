@@ -23,7 +23,6 @@ app.use((req, res, next) => {
   console.log();
   User.findById("659a898fef1d702435cce2da")
     .then((user) => {
-      console.log(user);
       req.user = user;
       next();
     })
