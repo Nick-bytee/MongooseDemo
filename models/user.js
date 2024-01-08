@@ -52,6 +52,14 @@ userSchema.methods.addToCart = function (product) {
   return this.save();
 };
 
+userSchema.methods.deleteFromCart = function (productId) {
+  const updatedCartItems = this.cart.items.filter((item) => {
+    return item.productId.toString() !== productId.toString();
+  });
+  this.cart.items = updatedCartItems;
+  return this.save();
+};
+
 module.exports = mongoose.model("User", userSchema);
 
 // const mongodb = require("mongodb");
@@ -96,9 +104,7 @@ module.exports = mongoose.model("User", userSchema);
 //   }
 
 //   deleteFromCart(productId) {
-//     const updatedCartItems = this.cart.items.filter((item) => {
-//       return item.productId.toString() !== productId.toString();
-//     });
+//
 //     const db = getdb();
 //     return db
 //       .collection("users")
