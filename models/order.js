@@ -1,6 +1,25 @@
-const mongodb = require("mongodb");
-const getdb = require("../util/database").getdb;
+const mongoose = require("mongoose");
 
-class Order {}
+const Schema = mongoose.Schema;
 
-module.exports = Order;
+const orderSchema = new Schema({
+  products: [
+    {
+      product: { type: Object, required: true },
+      quantity: { type: Number, required: true },
+    },
+  ],
+  user: {
+    name: {
+      type: String,
+      required: true,
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+  },
+});
+
+module.exports = mongoose.model("Order", orderSchema);

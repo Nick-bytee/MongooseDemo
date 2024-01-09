@@ -20,7 +20,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
-  console.log();
   User.findById("659a898fef1d702435cce2da")
     .then((user) => {
       req.user = user;
@@ -35,7 +34,21 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 mongoose
   .connect(process.env.URI)
-  .then(app.listen(3000))
+  .then((result) => {
+    User.findOne().then((user) => {
+      if (!user) {
+        const user = new User({
+          name: "Max",
+          email: "max@test.com",
+          cart: {
+            items: [],
+          },
+        });
+        user.save();
+      }
+    });
+    app.listen(3000);
+  })
   .catch((err) => {
     console.log(err);
   });
